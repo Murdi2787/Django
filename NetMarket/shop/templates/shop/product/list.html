@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title></title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+</head>
+<body>
+{% extends "shop/base.html" %}
+{% load static %}
+{% block title %}
+    {% if category %}{{ category.name }}{% else %}Товары{% endif %}
+{% endblock %}
+{% block content %}
+    <div id="sidebar">
+        <h3>Категории</h3>
+        <ul>
+            <li {% if not category %}class="selected"{% endif %}>
+                <a href="{% url 'shop:product_list' %}">Все товары</a>
+            </li>
+            {% for c in categories %}
+                <li {% if category.slug == c.slug %}class="selected"{% endif %}>
+                    <a href="{{ c.get_absolute_url }}">{{ c.name }}</a>
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
+    <div id="main" class="product-list">
+        <h1>{% if category %}{{ category.name }}{% else %}Products{% endif %}</h1>
+        {% for product in products %}
+            <div class="item">
+                <a href="{{ product.get_absolute_url }}">
+                    <img src="{% if product.image %}{{ product.image.url }}{% else %}{% static 'img/no_img.png' %}
+                    {% endif %}" width='300' height='300' alt='{{ product.name }}'>
+                </a>
+                <a href="{{ product.get_absolute_url }}">{{ product.name }}</a><br>
+                {{ product.price }}грн
+            </div>
+        {% endfor %}
+    </div>
+{% endblock %}
+</body>
+</html>

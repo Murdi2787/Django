@@ -1,0 +1,23 @@
+{% load static %}
+    <div id="header">
+        <a href="/" class="logo">Интернет-магазин</a>
+    </div>
+    <div id="subheader">
+        <div class="cart">
+        {% with total_items=cart|length %}
+            {% if cart|length > 0 %}
+                Корзина:
+                <a href="{% url 'cart:cart_detail' %}">
+                   Товар в кол-ве {{ total_items }} шт{{ total_items|pluralize }},
+                    {{ cart.get_total_price }}грн
+                </a>
+            {% else %}
+                Корзина пуста
+            {% endif %}
+        {% endwith %}
+        </div>
+    </div>
+    <div id="content">
+        {% block content %}
+        {% endblock %}
+    </div>
