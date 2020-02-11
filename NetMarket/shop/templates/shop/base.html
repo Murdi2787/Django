@@ -1,23 +1,23 @@
 {% load static %}
-    <div id="header">
-        <a href="/" class="logo">Интернет-магазин</a>
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>{% block title %}NetMarket{% endblock %}</title>
+    <link href="{% static 'css/bootstrap.css' %}" rel="stylesheet">
+</head>
+<body>
+<div id="header">
+    <a href="/" class="logo">NetMarket</a>
+</div>
+<div id="subheader">
+    <div class="cart">
+                Ваша корзина пуста
     </div>
-    <div id="subheader">
-        <div class="cart">
-        {% with total_items=cart|length %}
-            {% if cart|length > 0 %}
-                Корзина:
-                <a href="{% url 'cart:cart_detail' %}">
-                   Товар в кол-ве {{ total_items }} шт{{ total_items|pluralize }},
-                    {{ cart.get_total_price }}грн
-                </a>
-            {% else %}
-                Корзина пуста
-            {% endif %}
-        {% endwith %}
-        </div>
-    </div>
-    <div id="content">
-        {% block content %}
-        {% endblock %}
-    </div>
+</div>
+<div id="content">
+            {% block content %}
+            {% endblock %}
+</div>
+</body>
+</html>
