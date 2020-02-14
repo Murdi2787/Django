@@ -1,37 +1,65 @@
 {% extends "shop/base.html" %}
 {% load static %}
-
-{% block title %}
-    {% if category %}{{ category.name }}{% else %}Товары{% endif %}
-{% endblock %}
-
-{% block content %}
-    <div id="sidebar">
-        <h3>Категории</h3>
-        <ul>
-            <li {% if not category %}class="selected"{% endif %}>
-                <a href="{% url 'shop:product_list' %}">Все товары</a>
+{% block head %}
+<div class="container-fluid">
+  <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <a class="navbar-brand" href="/">NetMarket</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="container-fluid">
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul class="navbar-nav mr-auto">
+          {% for c in categories %}
+            <li {% if category.slug == c.slug %} class="nav-item active"{% endif %}>
+              <a class="nav-link" href="{{ c.get_absolute_url }}"> {{ c.name }} <span class="sr-only">(current)</span></a>
             </li>
-            {% for c in categories %}
-                <li {% if category.slug == c.slug %}class="selected"
-                {% endif %}>
-                    <a href="{{ c.get_absolute_url }}">{{ c.name }}</a>
-                </li>
-            {% endfor %}
-        </ul>
+          {% endfor %}
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="" id="navbarDropdown" role="button"
+              data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> Производители </a>
+          {% for m in manufacturers %}
+              <div {% if manufacturer.slug == m.slug %}class="dropdown-menu" aria-labelledby="navbarDropdown"{% endif %}>
+                <a class="dropdown-item" href="{{ m.get_absolute_url }}">{{ m.name }}</a>
+              </div>
+          {% endfor %}
+            </li>
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="" id="navbarDropdown" role="button"
+              data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> Коллекции </a>
+          {% for c in collections %}
+              <div {% if collection.slug == c.slug %}class="dropdown-menu" aria-labelledby="navbarDropdown"{% endif %}>
+                <a class="dropdown-item" href="{{ c.get_absolute_url }}">{{ c.name }}</a>
+              </div>
+          {% endfor %}
+            </li>
+          </ul>
+        </div>
+      </div>
+      <form class="form-inline my-2 my-lg-0">
+        <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+        <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+      </form>
+  </nav>
+</div>
+{% endblock %}
+{% block content %}
+  <div class="container-fluid p-3 my-3">
+    <div class="container-fluid-center"><h1>{% if category %}{{ category.name }}{% else %}Товары{% endif %}</h1></div>
+  {% for product in products %}
+    <div class="card" style="width: 18rem;">
+      <a href="{{ product.get_absolute_url }}">
+        <img src="{% if product.image %}{{ product.image }}
+        {% else %}{% static 'no_img.png' %}{% endif %}" class="card-img-top" alt="...">
+      </a>
+      <div class="card-body">
+        <p class="card-text">
+          <a href="{{ product.get_absolute_url }}"> {{ product.name }} </a>
+        </p>
+        <h5 class="card-title">{{ product.price }} грн</h5>
+        <a href="" class="btn btn-primary">Add to Card</a>
+  {% endfor %}
+      </div>
     </div>
-    <div id="main" class="product-list">
-        <h1>{% if category %}{{ category.name }}{% else %}Товары{% endif %}</h1>
-        {% for product in products %}
-            <div class="item">
-                <a href="{{ product.get_absolute_url }}">
-                    <img src="{% if product.image %}{{ product.image.url }}
-                    {% else %}{% static 'no_img.png' %}{% endif %}"
-                    width='300' height='300' alt='{{ product.name }}'>
-                </a>
-                <a href="{{ product.get_absolute_url }}">{{ product.name }}</a>
-                <br>
-                {{ product.price }} грн</div>
-        {% endfor %}
-    </div>
+  </div>
 {% endblock %}

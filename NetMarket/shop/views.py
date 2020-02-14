@@ -6,6 +6,10 @@ from .models import Category, Manufacturer, Collection, Product
 def product_list(request, category_slug=None):
     category = None
     categories = Category.objects.all()
+    manufacturer = None
+    manufacturers = Manufacturer.objects.all()
+    collection = None
+    collections = Collection.objects.all()
     products = Product.objects.filter(available=True)
     if category_slug:
         category = get_object_or_404(Category, slug=category_slug)
@@ -15,7 +19,11 @@ def product_list(request, category_slug=None):
                   {
                       'category': category,
                       'categories': categories,
-                      'products': products
+                      'products': products,
+                      'manufacturer': manufacturer,
+                      'manufacturers': manufacturers,
+                      'collection': collection,
+                      'collections': collections,
                   })
 
 

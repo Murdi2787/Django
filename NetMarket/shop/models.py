@@ -59,7 +59,7 @@ class Product(models.Model):
     collection = models.ForeignKey(Collection, default='', related_name='products', on_delete=models.CASCADE)
     name = models.CharField(max_length=200, db_index=True)
     slug = models.SlugField(max_length=200, db_index=True)
-    image = models.ImageField(upload_to='products/%Category.name', blank=True)
+    image = models.ImageField(upload_to='products/%Category.name/%Manufacturer.name/%Collection.name', blank=True)
     description = models.TextField(blank=True)
     price = models.DecimalField(max_digits=10, decimal_places=2)
     stock = models.PositiveIntegerField()
